@@ -12,6 +12,6 @@ If temperature gets above 98 then it plays text to voice message along with a no
 - Open your terminal in this folder and run the following command:
 `python app.py`
 
-##Disclaimer
+## Disclaimer
 This script was created for and tested only on the Ubuntu 18.04
 This script automatically assumes that user uses a NVIDIA GPU
