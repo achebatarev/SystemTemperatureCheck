@@ -10,7 +10,7 @@ If temperature gets above 98 then it plays text to voice message along with a no
 
 ## Running the App
 - Open your terminal in this folder and run the following command:
-`python app.py`
+`python main.py`
 
 ## Disclaimer
 This script was created for and tested only on the Ubuntu 18.04
