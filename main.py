@@ -2,7 +2,6 @@ import psutil
 import time
 import os
 import re
-import subprocess
 import pyttsx3
 from nvidia_smi import nvmlInit, NVMLError, nvmlDeviceGetHandleByIndex, nvmlDeviceGetTemperature, NVML_TEMPERATURE_GPU
 
@@ -16,7 +15,13 @@ def play_audio(temperature):
 
 def sendmessage(message):
     os.system('notify-send "{}" "{}"'.format("Temperature Warning", message))
-    return
+
+def connect_gpu():
+    try:
+        nvmlInit()
+        return 1
+    except:
+        return None
 
 def get_gpu_temp():
     try:
@@ -25,8 +30,7 @@ def get_gpu_temp():
         gpu_temp = nvmlDeviceGetTemperature(gpu, NVML_TEMPERATURE_GPU)
         return gpu_temp
     except NVMLError:
-        print("Failed to initialize NVML: ")
-        print("Exiting...")
+        return None
 
 def temp_check():
     hot = 0
@@ -43,7 +47,7 @@ def temp_check():
         sendmessage("Be carefull one of the cpu cores is " + str(hot))
     elif hot >= 98: 
         sendmessage("Turn it off, or it is gonna blow, " + str(hot))
-        
+        play_audio()
     print(temperatures)
 
 try:
