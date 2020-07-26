@@ -36,23 +36,28 @@ def temp_check():
     hot = 0
     data = psutil.sensors_temperatures()
     temperatures = re.findall("current=[0-9]{0,3}\.[0-9]", str(data['coretemp']))
+    # clean up the temperatures to include only floats
+    # keep track of the highest temp
     for i, t in enumerate(temperatures):
         temperatures[i] = float(t[8:])
         hot = max(temperatures[i], hot)
+    # add the gpu temp to the mix
     gpu_temp = get_gpu_temp()
     if gpu_temp:
         hot = max(hot, gpu_temp)
         temperatures.append("gpu: "  + str(gpu_temp))
+    # output data depending on highest temp
     if hot > 80 and hot < 98:
         sendmessage("Be carefull one of the cpu cores is " + str(hot))
     elif hot >= 98: 
         sendmessage("Turn it off, or it is gonna blow, " + str(hot))
-        play_audio()
+        play_audio(str(hot))
     print(temperatures)
 
+# run the program
 try:
     while(True):
         temp_check()
         time.sleep(60)
 except KeyboardInterrupt:
-    print("Lets stop it boys")
+    print(" Goodbye Cruel World!")
